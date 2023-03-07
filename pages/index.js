@@ -1,19 +1,29 @@
+import EventItem from "@/components/EventItem";
 import Layout from "@/components/Layout";
 import { API_URL } from "config";
+import Link from "next/link";
 export default function Home({ events }) {
-  console.log(events);
   return (
     <Layout>
-      <div>INCOMING REQUEST</div>
+      <h1>INCOMING REQUEST</h1>
+      {events.length === 0 && <h3>No Events to show</h3>}
+
+      {events.map((evt) => (
+        <EventItem key={evt.id} evt={evt} />
+      ))}
+      {events.length > 0 && (
+        <Link className="btn-seconday" href="/events">
+          View All Events
+        </Link>
+      )}
     </Layout>
   );
 }
 
-export async function getServerSideProps({ req }) {
+export async function getStaticProps({ req }) {
   const res = await fetch(`${API_URL}/api/events`);
   const events = await res.json();
-  console.log("MATEEN", events);
   return {
-    props: { events },
+    props: { events: events.slice(0, 3) },
   };
 }

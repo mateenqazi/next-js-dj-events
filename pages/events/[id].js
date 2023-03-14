@@ -48,7 +48,7 @@ export default function EventIdPage({ evt }) {
 
 export async function getStaticPaths() {
   const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
+  const events = await res.json();                                      
   const paths = events.map((evt) => ({
     params: { id: evt.id },
   }));
